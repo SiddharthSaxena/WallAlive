@@ -13,8 +13,3 @@ while 1:
         pictureDirectory = glob.glob(directory + format)
         for picture in pictureDirectory:
             wall.run(picture, timer)
-
-# Find a way as to how to run the script in background.
-# Use platform configuration, and convert images to bmp for windows 8 and lower. A program was available on the
-# internet.
-# Add the regedit.exe program from the Downloads folder and add it to the setup.py
