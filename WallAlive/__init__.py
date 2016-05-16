@@ -1,1 +1,1 @@
-from src import WallAlive
+from WallAlive import WallAlive
