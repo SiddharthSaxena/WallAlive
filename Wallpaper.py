@@ -2,7 +2,7 @@ import glob
 import WallAlive
 
 formats = ['*.jpg', '*.png', '*.bmp', '*.gif', '*.tif', '*.tiff']
-wall = src.WallAlive
+wall = WallAlive.WallAlive
 directory = wall.path()
 timer = wall.delay()
 wall.regedit()
