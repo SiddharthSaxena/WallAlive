@@ -51,7 +51,7 @@ def run(directory, timer):
 # booted.
 def regedit():
     subKey = 'Software\\Microsoft\\Windows\\CurrentVersion\\Run'
-    script = user + 'PycharmProjects/Wall_Alive/Wallpaper.py'
+    script = os.getcwd() + '/Wallpaper.py'
     python = os.path.join(os.path.dirname(executable), 'python.exe')
 
     hKey = register.OpenKey(register.HKEY_CURRENT_USER, subKey, 0, register.KEY_SET_VALUE)
