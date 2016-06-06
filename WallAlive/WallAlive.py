@@ -5,6 +5,8 @@ import sys
 import time
 import winreg as register
 from sys import executable
+from PIL import ImageFile
+from shutil import copyfile
 
 user = os.path.expanduser('~')
 SPI_SET_WALLPAPER = 20
@@ -13,8 +15,8 @@ SPI_SET_WALLPAPER = 20
 # Sets the path for image directory to be used.
 def path():
     try:
-        directory = input('Set the path for image directory: ')
-        return user + directory
+        directory = input('Set the path for image directory: ' + user + '\\')
+        return user + '\\' + directory + '\\'
     except OSError:
         print('Sorry, Directory does not exist')
         exit()
@@ -37,10 +39,10 @@ def delay():
 def run(directory, timer):
     try:
         if int(platform.python_version()[0]) >= 3:
-            ctypes.windll.user32.SystemParametersInfoW(SPI_SET_WALLPAPER, 0, directory, 0)
+            ctypes.windll.user32.SystemParametersInfoW(SPI_SET_WALLPAPER, 0, directory, 3)
             time.sleep(timer)
         elif int(platform.python_version()[0]) < 3:
-            ctypes.windll.user32.SystemParametersInfoA(SPI_SET_WALLPAPER, 0, directory, 0)
+            ctypes.windll.user32.SystemParametersInfoA(SPI_SET_WALLPAPER, 0, directory, 3)
             time.sleep(timer)
     except sys.exc_info():
         print(sys.exc_info()[1])
@@ -51,11 +53,23 @@ def run(directory, timer):
 # booted.
 def regedit():
     subKey = 'Software\\Microsoft\\Windows\\CurrentVersion\\Run'
-    script = os.getcwd() + '/Wallpaper.py'
+    script = user + '\\WallAlive\\Wallpaper.py'
     python = os.path.join(os.path.dirname(executable), 'python.exe')
-
     hKey = register.OpenKey(register.HKEY_CURRENT_USER, subKey, 0, register.KEY_SET_VALUE)
-
-    register.SetValueEx(hKey, 'Wall Alive', 0, register.REG_SZ, '"{0}" "{1}"'.format(python, script))
-
+    register.SetValueEx(hKey, 'WallAlive', 0, register.REG_SZ, '"{0}" "{1}"'.format(python, script))
     register.CloseKey(hKey)
+
+
+# Installs WallAlive module.
+def install():
+    temp = os.path.join(user + '\\WallAlive\\WallAlive')
+    if not os.path.exists(temp):
+        os.makedirs(temp)
+    currentDirectory = os.getcwd()
+    currentDirectoryList = currentDirectory.split('\\')
+    currentDirectoryList.append('WallAlive')
+    nextDirectory = '\\'.join(currentDirectoryList)
+
+    copyfile(nextDirectory + '\\WallAlive.py', user + '\\WallAlive\\WallAlive\\WallAlive.py')
+    copyfile(nextDirectory + '\\__init__.py', user + '\\WallAlive\\WallAlive\\__init__.py')
+    copyfile(currentDirectory + '\\Wallpaper.py', user + '\\WallAlive\\Wallpaper.py')
