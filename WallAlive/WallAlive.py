@@ -30,8 +30,8 @@ def delay():
             print('Sorry but the minimum delay has to be greater than 0')
         else:
             return timer
-    except sys.exc_info():
-        print(sys.exc_info()[1])
+    except ValueError:
+        print('Please enter a valid number')
         exit()
 
 
